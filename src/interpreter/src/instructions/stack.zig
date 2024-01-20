@@ -14,5 +14,6 @@ pub fn push(interpreter: *Interpreter, n: usize) !void {
     var x: u256 = std.mem.readInt(u256, &value, .Big);
 
     try interpreter.stack.push(x);
+
     interpreter.instruction_pointer += n;
 }

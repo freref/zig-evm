@@ -33,5 +33,6 @@ pub const Interpreter = struct {
         } else {
             unreachable;
         }
+        self.instruction_pointer += 1;
     }
 };

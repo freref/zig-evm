@@ -19,7 +19,7 @@ fn setupTest() !TestState {
 
     var bytecode = [_]u8{
         0x61, 0x02, 0x01, // PUSH 2
-        0x50, // POP
+        0x60, 0x01, // PUSH 1
     };
 
     var interpreter = try Interpreter.init(allocator, &bytecode);
@@ -48,6 +48,7 @@ test "PUSH N" {
     defer testState.deinit();
 
     try testState.interpreter.step(0x61);
+    try testState.interpreter.step(0x60);
 }
 
 // STACK TESTS
