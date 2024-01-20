@@ -10,7 +10,7 @@ const OpcodeFunc = *const fn (interpreter: *Interpreter) void;
 inline fn push(n: usize) OpcodeFunc {
     return struct {
         fn func(interpreter: *Interpreter) void {
-            Stack.push(interpreter, n);
+            Stack.push(interpreter, n) catch unreachable;
         }
     }.func;
 }

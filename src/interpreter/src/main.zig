@@ -17,7 +17,12 @@ fn setupTest() !TestState {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     const allocator = arena.allocator();
 
-    var interpreter = try Interpreter.init(allocator);
+    var bytecode = [_]u8{
+        0x61, 0x02, 0x01, // PUSH 2
+        0x50, // POP
+    };
+
+    var interpreter = try Interpreter.init(allocator, &bytecode);
 
     return TestState{
         .arena = arena,

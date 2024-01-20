@@ -8,12 +8,16 @@ pub const Interpreter = struct {
     const Self = @This();
 
     alloc: std.mem.Allocator,
-    stack: Stack(u256),
+    stack: Stack(),
+    instruction_pointer: [*]u8,
+    bytecode: []u8,
 
-    pub fn init(alloc: std.mem.Allocator) !Self {
+    pub fn init(alloc: std.mem.Allocator, bytecode: []u8) !Self {
         return .{
             .alloc = alloc,
-            .stack = try Stack(u256).init(alloc),
+            .stack = try Stack().init(alloc),
+            .instruction_pointer = bytecode.ptr,
+            .bytecode = bytecode,
         };
     }
 
