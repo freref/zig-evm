@@ -7,12 +7,18 @@ pub fn Stack(comptime T: type) type {
         const MAX_STACK_SIZE: usize = 1024;
 
         stack: std.ArrayList(T),
+        alloc: std.mem.Allocator,
 
         pub fn init(alloc: std.mem.Allocator) !Self {
             var stack = try std.ArrayList(T).initCapacity(alloc, MAX_STACK_SIZE);
             return .{
                 .stack = stack,
+                .alloc = alloc,
             };
+        }
+
+        pub fn deinit(self: *Self) !void {
+            self.stack.deinit();
         }
 
         // Pushes an element to the top of the stack
@@ -25,22 +31,4 @@ pub fn Stack(comptime T: type) type {
             return self.stack.pop();
         }
     };
-}
-
-test "stack" {
-    // Initialize a stack for integers
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-
-    const allocator = arena.allocator();
-
-    var stack = try Stack(u256).init(allocator);
-
-    // Test pushing elements
-    try stack.push(10);
-    try stack.push(20);
-
-    // Test popping elements
-    try expect(stack.pop() == 20);
-    try expect(stack.pop() == 10);
 }

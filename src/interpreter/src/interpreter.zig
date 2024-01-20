@@ -10,15 +10,19 @@ pub const Interpreter = struct {
     alloc: std.mem.Allocator,
     stack: Stack(u256),
 
-    fn init(alloc: std.mem.Allocator) !Self {
+    pub fn init(alloc: std.mem.Allocator) !Self {
         return .{
             .alloc = alloc,
             .stack = try Stack(u256).init(alloc),
         };
     }
 
+    pub fn deinit(self: *Self) !void {
+        try self.stack.deinit();
+    }
+
     // TODO: add null optimization
-    fn step(self: *Self, comptime op: u8) !void {
+    pub fn step(self: *Self, comptime op: u8) !void {
         const opcodeFunc = InstructionTable[op];
         if (opcodeFunc) |func| {
             func(self);
@@ -27,30 +31,3 @@ pub const Interpreter = struct {
         }
     }
 };
-
-test "POP" {
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-
-    const allocator = arena.allocator();
-
-    var interpreter = try Interpreter.init(allocator);
-
-    try interpreter.stack.push(1);
-    try interpreter.stack.push(2);
-
-    try interpreter.step(0x50);
-
-    try expect(interpreter.stack.pop() == 1);
-}
-
-test "PUSHN" {
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-
-    const allocator = arena.allocator();
-
-    var interpreter = try Interpreter.init(allocator);
-
-    try interpreter.step(0x61);
-}
