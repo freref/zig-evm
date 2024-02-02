@@ -2,21 +2,13 @@
 const std = @import("std");
 
 const Interpreter = @import("../interpreter.zig").Interpreter;
-
 const Stack = @import("stack.zig");
+const Control = @import("control.zig");
 
 const OpcodeFunc = *const fn (interpreter: *Interpreter) void;
 
-inline fn push(n: usize) OpcodeFunc {
-    return struct {
-        fn func(interpreter: *Interpreter) void {
-            Stack.push(interpreter, n) catch unreachable;
-        }
-    }.func;
-}
-
 pub const InstructionTable: [256]?OpcodeFunc = [_]?OpcodeFunc{
-    null, // STOP = 0x00,
+    Control.stop(), // STOP = 0x00,
     //
     null, // ADD = 0x01,
     null, // MUL = 0x02,
@@ -115,38 +107,38 @@ pub const InstructionTable: [256]?OpcodeFunc = [_]?OpcodeFunc{
     null, // MCOPY = 0x5E,
     //
     null, // PUSH0 = 0x5F,
-    push(1), // PUSH1 = 0x60,
-    push(2), // PUSH2 = 0x61,
-    push(3), // PUSH3 = 0x62,
-    push(4), // PUSH4 = 0x63,
-    push(5), // PUSH5 = 0x64,
-    push(6), // PUSH6 = 0x65,
-    push(7), // PUSH7 = 0x66,
-    push(8), // PUSH8 = 0x67,
-    push(9), // PUSH9 = 0x68,
-    push(10), // PUSH10 = 0x69,
-    push(11), // PUSH11 = 0x6A,
-    push(12), // PUSH12 = 0x6B,
-    push(13), // PUSH13 = 0x6C,
-    push(14), // PUSH14 = 0x6D,
-    push(15), // PUSH15 = 0x6E,
-    push(16), // PUSH16 = 0x6F,
-    push(17), // PUSH17 = 0x70,
-    push(18), // PUSH18 = 0x71,
-    push(19), // PUSH19 = 0x72,
-    push(20), // PUSH20 = 0x73,
-    push(21), // PUSH21 = 0x74,
-    push(22), // PUSH22 = 0x75,
-    push(23), // PUSH23 = 0x76,
-    push(24), // PUSH24 = 0x77,
-    push(25), // PUSH25 = 0x78,
-    push(26), // PUSH26 = 0x79,
-    push(27), // PUSH27 = 0x7A,
-    push(28), // PUSH28 = 0x7B,
-    push(29), // PUSH29 = 0x7C,
-    push(30), // PUSH30 = 0x7D,
-    push(31), // PUSH31 = 0x7E,
-    push(32), // PUSH32 = 0x7F,
+    Stack.push(1), // PUSH1 = 0x60,
+    Stack.push(2), // PUSH2 = 0x61,
+    Stack.push(3), // PUSH3 = 0x62,
+    Stack.push(4), // PUSH4 = 0x63,
+    Stack.push(5), // PUSH5 = 0x64,
+    Stack.push(6), // PUSH6 = 0x65,
+    Stack.push(7), // PUSH7 = 0x66,
+    Stack.push(8), // PUSH8 = 0x67,
+    Stack.push(9), // PUSH9 = 0x68,
+    Stack.push(10), // PUSH10 = 0x69,
+    Stack.push(11), // PUSH11 = 0x6A,
+    Stack.push(12), // PUSH12 = 0x6B,
+    Stack.push(13), // PUSH13 = 0x6C,
+    Stack.push(14), // PUSH14 = 0x6D,
+    Stack.push(15), // PUSH15 = 0x6E,
+    Stack.push(16), // PUSH16 = 0x6F,
+    Stack.push(17), // PUSH17 = 0x70,
+    Stack.push(18), // PUSH18 = 0x71,
+    Stack.push(19), // PUSH19 = 0x72,
+    Stack.push(20), // PUSH20 = 0x73,
+    Stack.push(21), // PUSH21 = 0x74,
+    Stack.push(22), // PUSH22 = 0x75,
+    Stack.push(23), // PUSH23 = 0x76,
+    Stack.push(24), // PUSH24 = 0x77,
+    Stack.push(25), // PUSH25 = 0x78,
+    Stack.push(26), // PUSH26 = 0x79,
+    Stack.push(27), // PUSH27 = 0x7A,
+    Stack.push(28), // PUSH28 = 0x7B,
+    Stack.push(29), // PUSH29 = 0x7C,
+    Stack.push(30), // PUSH30 = 0x7D,
+    Stack.push(31), // PUSH31 = 0x7E,
+    Stack.push(32), // PUSH32 = 0x7F,
     //
     null, // DUP1 = 0x80,
     null, // DUP2 = 0x81,

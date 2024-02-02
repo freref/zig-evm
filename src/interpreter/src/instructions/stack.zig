@@ -3,17 +3,24 @@ const std = @import("std");
 
 const Interpreter = @import("../interpreter.zig").Interpreter;
 
+const OpcodeFunc = *const fn (interpreter: *Interpreter) void;
+
 pub fn pop(interpreter: *Interpreter) void {
     _ = interpreter.stack.pop();
 }
 
-pub fn push(interpreter: *Interpreter, n: usize) !void {
-    var value = [1]u8{0} ** 32;
-    @memcpy(value[32 - n ..], interpreter.instruction_pointer[1..][0..n]);
+pub inline fn push(n: usize) OpcodeFunc {
+    return struct {
+        fn func(interpreter: *Interpreter) void {
+            var value = [1]u8{0} ** 32;
 
-    var x: u256 = std.mem.readInt(u256, &value, .Big);
+            @memcpy(value[32 - n ..], interpreter.instruction_pointer[1..][0..n]);
 
-    try interpreter.stack.push(x);
+            var x: u256 = std.mem.readInt(u256, &value, .Big);
 
-    interpreter.instruction_pointer += n;
+            interpreter.stack.push(x) catch unreachable;
+
+            interpreter.instruction_pointer += n;
+        }
+    }.func;
 }
