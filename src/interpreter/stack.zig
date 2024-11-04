@@ -10,7 +10,7 @@ pub fn Stack() type {
         alloc: std.mem.Allocator,
 
         pub fn init(alloc: std.mem.Allocator) !Self {
-            var stack = try std.ArrayList(u256).initCapacity(alloc, MAX_STACK_SIZE);
+            const stack = try std.ArrayList(u256).initCapacity(alloc, MAX_STACK_SIZE);
             return .{
                 .stack = stack,
                 .alloc = alloc,

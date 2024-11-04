@@ -16,7 +16,7 @@ pub inline fn push(n: usize) OpcodeFunc {
 
             @memcpy(value[32 - n ..], interpreter.instruction_pointer[1..][0..n]);
 
-            var x: u256 = std.mem.readInt(u256, &value, .Big);
+            const x: u256 = std.mem.readInt(u256, &value, .big);
 
             interpreter.stack.push(x) catch unreachable;
 

@@ -1,4 +1,13 @@
-# Zig EVM (wip)
-**Zig Ethereum Virtual Machine**
+# evm-interpreter (wip)
+> [!NOTE]  
+> This project is currently not being worked on anymore.
+## Instructions
+### Build
+```
+zig build
+```
+### Test
+```
+zig build test
+```
 
-Zig EVM is an EVM implementation written in Zig, inspired by revm and Raul Jordan's zevm.

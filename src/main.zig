@@ -22,7 +22,7 @@ fn setupTest() !TestState {
         0x60, 0x01, // PUSH 1
     };
 
-    var interpreter = try Interpreter.init(allocator, &bytecode);
+    const interpreter = try Interpreter.init(allocator, &bytecode);
 
     return TestState{
         .arena = arena,
